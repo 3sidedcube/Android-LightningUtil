@@ -5,30 +5,153 @@
  **/
 package com.cube.storm.util.lib.debug;
 
+import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
+import com.cube.storm.util.BuildConfig;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Collection;
 
 /**
- * @brief This static class is for debugging
+ * Class used for debugging throughout the application
+ *
+ * @author Callum Taylor
+ * @project StormUtil
  */
 public class Debug
 {
-	private final static String LOG_TAG = "DEBUG";
-	private static boolean DEBUG = true;
+	@Retention(RetentionPolicy.SOURCE)
+	@IntDef({LEVEL_VERBOSE, LEVEL_DEBUG, LEVEL_WARNING, LEVEL_ERROR})
+	public @interface DebugLevel {}
+
+	public static final int LEVEL_VERBOSE = 2;
+	public static final int LEVEL_DEBUG = 3;
+	public static final int LEVEL_WARNING = 5;
+	public static final int LEVEL_ERROR = 6;
 
 	/**
-	 * Sets if the app is in debug mode.
-	 *
-	 * @param inDebug If set to true then outputs will be made, else they wont
+	 * Default tag to use when logging
 	 */
-	public static void setDebugMode(boolean inDebug)
+	public static String LOG_TAG = "DEBUG";
+
+	/**
+	 * Level to log out to
+	 */
+	@DebugLevel
+	public static int LOG_LEVEL = LEVEL_ERROR;
+
+	/**
+	 * If the class is in debug mode. If this is false, then nothing will be outputted
+	 */
+	public static boolean DEBUG = BuildConfig.DEBUG;
+
+	/**
+	 * Logs out a collection of items
+	 *
+	 * @param args The collection to loop through and output
+	 */
+	public static void out(@Nullable Collection args)
 	{
-		DEBUG = inDebug;
+		if (!DEBUG) return;
+
+		String output = "";
+
+		if (args != null)
+		{
+			for (Object object : args)
+			{
+				if (object == null)
+				{
+					output += "[null]";
+					continue;
+				}
+
+				output += String.valueOf(object) + ", ";
+			}
+		}
+
+		longInfo(getCallingMethodInfo() + " " + output);
 	}
 
+	/**
+	 * Logs out an array of objects
+	 *
+	 * @param args The array of objects to loop through and output
+	 */
+	public static void out(@Nullable Object... args)
+	{
+		if (!DEBUG) return;
+
+		String output = "";
+
+		if (args != null)
+		{
+			for (Object object : args)
+			{
+				if (object == null)
+				{
+					output += "[null]";
+					continue;
+				}
+
+				output += String.valueOf(object) + ", ";
+			}
+		}
+
+		longInfo(getCallingMethodInfo() + " " + output);
+	}
+
+	/**
+	 * Outputs a string with an array of arguments for the strings placeholders
+	 *
+	 * @param str The string with % placeholders
+	 * @param args The arguments for the placeholders
+	 */
+	public static void out(@NonNull String str, @Nullable Object... args)
+	{
+		if (!DEBUG) return;
+
+		longInfo(getCallingMethodInfo() + " " + String.format(str, args));
+	}
+
+	/**
+	 * Outputs an object
+	 *
+	 * @param obj The object to output
+	 */
+	public static void out(@Nullable Object obj)
+	{
+		if (!DEBUG) return;
+
+		if (obj == null)
+		{
+			obj = "[null]";
+		}
+
+		longInfo(getCallingMethodInfo() + " " + obj.toString());
+	}
+
+	/**
+	 * Logs a stacktrace to console (Overrides {@link #LOG_LEVEL}
+	 *
+	 * @param e The exception to output
+	 */
+	public static void out(@NonNull Exception e)
+	{
+		if (!DEBUG) return;
+
+		e.printStackTrace();
+	}
+
+	/**
+	 * Gets the calling method from where Debug was called
+	 *
+	 * @return The string file name and line number of where the method was called from
+	 */
 	private static String getCallingMethodInfo()
 	{
 		Throwable fakeException = new Throwable();
@@ -46,187 +169,23 @@ public class Debug
 		return null;
 	}
 
-	private static void longInfo(String str)
+	/**
+	 * Cuts an output into smaller chunks to prevent the logger from cutting it off
+	 *
+	 * @param str The string to process
+	 */
+	private static void longInfo(@Nullable String str)
 	{
 		if (str == null) str = "[null]";
 
 		if (str.length() > 4000)
 		{
-			Log.e(LOG_TAG, str.substring(0, 4000));
+			Log.println(LOG_LEVEL, LOG_TAG, str.substring(0, 4000));
 			longInfo(str.substring(4000));
 		}
 		else
 		{
-			Log.e(LOG_TAG, str);
+			Log.println(LOG_LEVEL, LOG_TAG, str);
 		}
-	}
-
-	public static void out(Collection args)
-	{
-		if (!DEBUG) return;
-
-		String output = "";
-
-		if (args != null)
-		{
-			for (Object o : args)
-			{
-				if (o == null)
-				{
-					output += "[null]";
-					continue;
-				}
-				output += o.toString() + ", ";
-			}
-		}
-
-		longInfo(getCallingMethodInfo() + " " + output);
-	}
-
-	public static void out(Object... args)
-	{
-		if (!DEBUG) return;
-
-		String output = "";
-
-		if (args != null)
-		{
-			for (Object o : args)
-			{
-				if (o == null)
-				{
-					output += "[null]";
-					continue;
-				}
-				output += o.toString() + ", ";
-			}
-		}
-
-		longInfo(getCallingMethodInfo() + " " + output);
-	}
-
-	public static void out(String str, Object... args)
-	{
-		if (!DEBUG) return;
-
-		longInfo(getCallingMethodInfo() + " " + String.format(str, args));
-	}
-
-	public static void out(Object obj)
-	{
-		if (!DEBUG) return;
-
-		if (obj == null)
-		{
-			obj = "[null]";
-		}
-
-		longInfo(getCallingMethodInfo() + " " + obj.toString());
-	}
-
-	public static void out(Exception e)
-	{
-		if (!DEBUG) return;
-
-		e.printStackTrace();
-	}
-
-	public static String dump(Object o)
-	{
-		if (o == null)
-		{
-			return "[null]";
-		}
-
-		StringBuilder buffer = new StringBuilder();
-		Class oClass = o.getClass();
-
-		if (oClass.isArray())
-		{
-			buffer.append("Array: ");
-			buffer.append("[");
-			int i = 0;
-
-			while (i < Array.getLength(o))
-			{
-				Object value = Array.get(o, i);
-
-				if (value != null)
-				{
-					if (value.getClass().isPrimitive() ||
-						value.getClass() == Long.class ||
-						value.getClass() == Integer.class ||
-						value.getClass() == Boolean.class ||
-						value.getClass() == String.class ||
-						value.getClass() == Double.class ||
-						value.getClass() == Short.class ||
-						value.getClass() == Byte.class)
-					{
-						buffer.append(value);
-						if (i != (Array.getLength(o) - 1))
-						{
-							buffer.append(",");
-						}
-					}
-					else
-					{
-						buffer.append(dump(value));
-					}
-				}
-
-				i++;
-			}
-
-			buffer.append("]\n");
-		}
-		else
-		{
-			buffer.append("Class: ").append(oClass.getName());
-			buffer.append("{\n");
-			while (oClass != null)
-			{
-				Field[] fields = oClass.getDeclaredFields();
-				for (Field field : fields)
-				{
-					field.setAccessible(true);
-					buffer.append(field.getName());
-					buffer.append("=");
-					try
-					{
-						Object value = field.get(o);
-						if (value != null)
-						{
-							if (value.getClass().isPrimitive() ||
-								value.getClass() == Long.class ||
-								value.getClass() == String.class ||
-								value.getClass() == Integer.class ||
-								value.getClass() == Boolean.class ||
-								value.getClass() == Double.class ||
-								value.getClass() == Short.class ||
-								value.getClass() == Byte.class)
-							{
-								buffer.append(value);
-							}
-							else
-							{
-								buffer.append(dump(value));
-							}
-						}
-					}
-					catch (IllegalAccessException e)
-					{
-						buffer.append(e.getMessage());
-					}
-
-					buffer.append("\n");
-				}
-
-				oClass = oClass.getSuperclass();
-			}
-
-			buffer.append("}\n");
-		}
-
-		return (buffer.length() == 0 ? "[empty]" : buffer.toString());
 	}
 }
