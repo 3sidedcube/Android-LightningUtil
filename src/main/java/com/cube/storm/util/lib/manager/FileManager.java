@@ -16,8 +16,8 @@ import java.security.MessageDigest;
  * Provides JSON from a file location in different formats
  *
  * @author Matt Allen
+ * @project StormUtil
  */
-
 public class FileManager
 {
 	private static FileManager instance;
