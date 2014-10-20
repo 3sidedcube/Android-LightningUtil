@@ -2,6 +2,7 @@ package com.cube.storm.util.lib.resolver;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.cube.storm.util.lib.manager.FileManager;
@@ -9,21 +10,29 @@ import com.cube.storm.util.lib.manager.FileManager;
 import java.io.IOException;
 
 /**
- * // TODO: Add class description
+ * Resolves a file from the assets directory of the app
  *
  * @author Callum Taylor
  * @project StormUtil
  */
 public class AssetsResolver extends Resolver
 {
+	/**
+	 * The context used to access the assets
+	 */
 	private Context context;
 
+	/**
+	 * Main constructor
+	 *
+	 * @param context The context to access the application's assets
+	 */
 	public AssetsResolver(Context context)
 	{
 		this.context = context;
 	}
 
-	@Override public Uri resolveUri(Uri uri)
+	@Override public Uri resolveUri(@NonNull Uri uri)
 	{
 		if ("assets".equalsIgnoreCase(uri.getScheme()))
 		{
@@ -33,7 +42,7 @@ public class AssetsResolver extends Resolver
 		return null;
 	}
 
-	@Override public byte[] resolveFile(Uri uri)
+	@Override public byte[] resolveFile(@NonNull Uri uri)
 	{
 		String filePath = "";
 
