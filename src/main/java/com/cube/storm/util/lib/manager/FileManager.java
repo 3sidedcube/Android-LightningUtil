@@ -1,5 +1,6 @@
 package com.cube.storm.util.lib.manager;
 
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
@@ -357,6 +358,7 @@ public class FileManager
 	 *
 	 * @return The calculated file hash, or null
 	 */
+	@Nullable
 	public String getFileHash(String filePath)
 	{
 		InputStream is = null;
