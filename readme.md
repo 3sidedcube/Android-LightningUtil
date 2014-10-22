@@ -10,7 +10,7 @@ You shouldn't need to include this dependency as it will come as part of any mod
 
 ##Gradle
 
-Simply include the following for your gradle dependencies `com.cube:storm.util:0.1a`.
+Simply include the following for your gradle dependencies `com.cube.storm:util:0.2`.
 
 **Note** The versioning of the library will always be as follows:
 
