@@ -8,7 +8,11 @@ import com.google.gson.JsonParser;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 
@@ -225,6 +229,99 @@ public class FileManager
 		}
 
 		return null;
+	}
+
+	/**
+	 * Writes a file to disk
+	 * <p/>
+	 * This will replace a file if it already exists
+	 *
+	 * @param fileName The name of the file to write.
+	 * @param contents The byte data to write to the file
+	 */
+	public void writeFile(String fileName, byte[] contents)
+	{
+		writeFile("", fileName, contents);
+	}
+
+	/**
+	 * Writes a file to disk
+	 * <p/>
+	 * This will replace a file if it already exists
+	 *
+	 * @param fileName The name of the file to write.
+	 * @param contents The serializable data to write to the file
+	 */
+	public void writeFile(String fileName, Serializable contents)
+	{
+		try
+		{
+			File file = new File(fileName);
+			ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
+			fos.writeObject(contents);
+			fos.flush();
+			fos.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Writes a file to disk
+	 * <p/>
+	 * This will replace a file if it already exists
+	 *
+	 * @param folderPath The folder of the file
+	 * @param fileName The name of the file to write.
+	 * @param contents The serializable data to write to the file
+	 */
+	public void writeFile(String folderPath, String fileName, Serializable contents)
+	{
+		try
+		{
+			File file = new File(folderPath, fileName);
+			ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
+			fos.writeObject(contents);
+			fos.flush();
+			fos.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Writes a file to disk
+	 * <p/>
+	 * This will replace a file if it already exists
+	 *
+	 * @param folderPath The folder of the file
+	 * @param fileName The name of the file to write.
+	 * @param contents The byte data to write to the file
+	 */
+	public void writeFile(String folderPath, String fileName, byte[] contents)
+	{
+		try
+		{
+			File file = new File(folderPath, fileName);
+
+			if (file.exists())
+			{
+				file.delete();
+			}
+
+			FileOutputStream fos = new FileOutputStream(file);
+			fos.write(contents);
+			fos.flush();
+			fos.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
