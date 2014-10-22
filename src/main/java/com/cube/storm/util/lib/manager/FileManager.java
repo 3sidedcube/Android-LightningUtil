@@ -69,7 +69,7 @@ public class FileManager
 	 */
 	public byte[] readFile(String filePath)
 	{
-		return readFile(filePath);
+		return readFile(new File(filePath));
 	}
 
 	/**
