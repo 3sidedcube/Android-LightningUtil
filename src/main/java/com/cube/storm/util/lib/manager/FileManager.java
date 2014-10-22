@@ -204,6 +204,32 @@ public class FileManager
 	}
 
 	/**
+	 * Deletes a file from the filesystem
+	 *
+	 * @param file The file to delete
+	 *
+	 * @return {@code true} if the file was successfully deleted
+	 */
+	public boolean removeFile(String file)
+	{
+		return removeFile("", file);
+	}
+
+	/**
+	 * Deletes a file from the filesystem
+	 *
+	 * @param folderPath The base folder path
+	 * @param fileName The file to delete
+	 *
+	 * @return {@code true} if the file was successfully deleted
+	 */
+	public boolean removeFile(String folderPath, String fileName)
+	{
+		File f = new File(folderPath, fileName);
+		return f.delete();
+	}
+
+	/**
 	 * Gets the file's MD5 hash
 	 *
 	 * @param filePath The file to calculate the hash of
