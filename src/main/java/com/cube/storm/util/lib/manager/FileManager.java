@@ -49,6 +49,9 @@ public class FileManager
 		return instance;
 	}
 
+	/**
+	 * Default private constructor
+	 */
 	private FileManager(){}
 
 	/**
