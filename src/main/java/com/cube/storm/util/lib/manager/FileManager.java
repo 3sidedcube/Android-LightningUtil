@@ -75,18 +75,6 @@ public class FileManager
 	}
 
 	/**
-	 * Read the file and return the byte array of its contents
-	 *
-	 * @param filePath The absolute path to the file on the local filesystem
-	 *
-	 * @return Byte array of file contents
-	 */
-	public byte[] readFile(String filePath)
-	{
-		return readFile(new File(filePath));
-	}
-
-	/**
 	 * Read the file and return a string of the contents
 	 *
 	 * @param filePath The absolute path to the file on the local filesystem
@@ -111,6 +99,18 @@ public class FileManager
 	}
 
 	/**
+	 * Read from file and return a string representation of the contents
+	 *
+	 * @param stream The stream to read from
+	 *
+	 * @return String of file contents
+	 */
+	public String readFileAsString(InputStream stream)
+	{
+		return new String(readFile(stream));
+	}
+
+	/**
 	 * Read from file and return as a JSON element
 	 *
 	 * @param filePath The absolute path to the file on the local filesystem
@@ -132,6 +132,30 @@ public class FileManager
 	public JsonElement readFileAsJson(File file)
 	{
 		return new JsonParser().parse(readFileAsString(file));
+	}
+
+	/**
+	 * Read from file and return as a JSON element
+	 *
+	 * @param stream The stream to read from
+	 *
+	 * @return JSON representation of file contents
+	 */
+	public JsonElement readFileAsJson(InputStream stream)
+	{
+		return new JsonParser().parse(readFileAsString(stream));
+	}
+
+	/**
+	 * Read the file and return the byte array of its contents
+	 *
+	 * @param filePath The absolute path to the file on the local filesystem
+	 *
+	 * @return Byte array of file contents
+	 */
+	public byte[] readFile(String filePath)
+	{
+		return readFile(new File(filePath));
 	}
 
 	/**
