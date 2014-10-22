@@ -16,12 +16,18 @@ import java.security.MessageDigest;
  * Provides JSON from a file location in different formats
  *
  * @author Matt Allen
+ * @author Callum Taylor
  * @project StormUtil
  */
 public class FileManager
 {
 	private static FileManager instance;
 
+	/**
+	 * Gets the file manager singleton or creates one if its null
+	 *
+	 * @return The file manager singleton
+	 */
 	public static FileManager getInstance()
 	{
 		if (instance == null)
@@ -38,9 +44,13 @@ public class FileManager
 		return instance;
 	}
 
+	private FileManager(){}
+
 	/**
 	 * Get the age of the file in millis
+	 *
 	 * @param filePath Absolute path to the file
+	 *
 	 * @return Age of file in millis (Compared against current system time)
 	 */
 	public long getFileAge(String filePath)
@@ -54,7 +64,9 @@ public class FileManager
 
 	/**
 	 * Check if the file exists from an absolute file path
+	 *
 	 * @param filePath The absolute path to the file on the local filesystem
+	 *
 	 * @return {@code true} if file exists
 	 */
 	public boolean fileExists(String filePath)
@@ -64,7 +76,9 @@ public class FileManager
 
 	/**
 	 * Read the file and return the byte array of its contents
+	 *
 	 * @param filePath The absolute path to the file on the local filesystem
+	 *
 	 * @return Byte array of file contents
 	 */
 	public byte[] readFile(String filePath)
@@ -74,7 +88,9 @@ public class FileManager
 
 	/**
 	 * Read the file and return a string of the contents
+	 *
 	 * @param filePath The absolute path to the file on the local filesystem
+	 *
 	 * @return String of file contents
 	 */
 	public String readFileAsString(String filePath)
@@ -84,7 +100,9 @@ public class FileManager
 
 	/**
 	 * Read from file and return a string representation of the contents
+	 *
 	 * @param file A file to read from
+	 *
 	 * @return String of file contents
 	 */
 	public String readFileAsString(File file)
@@ -94,7 +112,9 @@ public class FileManager
 
 	/**
 	 * Read from file and return as a JSON element
+	 *
 	 * @param filePath The absolute path to the file on the local filesystem
+	 *
 	 * @return JSON representation of file contents
 	 */
 	public JsonElement readFileAsJson(String filePath)
@@ -104,7 +124,9 @@ public class FileManager
 
 	/**
 	 * Read from file and return as a JSON element
+	 *
 	 * @param file The file on the local filesystem
+	 *
 	 * @return JSON representation of file contents
 	 */
 	public JsonElement readFileAsJson(File file)
@@ -114,7 +136,9 @@ public class FileManager
 
 	/**
 	 * Read the file and return the byte array of its contents
+	 *
 	 * @param file The absolute path to the file on the local filesystem
+	 *
 	 * @return Byte array of file contents
 	 */
 	public byte[] readFile(File file)
@@ -131,7 +155,9 @@ public class FileManager
 
 	/**
 	 * Read the input stream and return the byte array of its contents
+	 *
 	 * @param input The input stream of the file to read
+	 *
 	 * @return Byte array of file contents
 	 */
 	public byte[] readFile(InputStream input)
@@ -178,27 +204,27 @@ public class FileManager
 	}
 
 	/**
-	 * Gets the files
-	 * @param filePath
-	 * @return
+	 * Gets the file's MD5 hash
+	 *
+	 * @param filePath The file to calculate the hash of
+	 *
+	 * @return The calculated file hash, or null
 	 */
 	public String getFileHash(String filePath)
 	{
 		InputStream is = null;
 		try
 		{
+			StringBuilder signature = new StringBuilder();
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			is = new FileInputStream(filePath);
-			is = new DigestInputStream(is, md);
+			is = new DigestInputStream(new FileInputStream(filePath), md);
 
 			byte[] contents = readFile(filePath);
-
-			StringBuilder signature = new StringBuilder();
 			byte[] messageDigest = md.digest(contents);
 
-			for (int i = 0; i < messageDigest.length; i++)
+			for (byte message : messageDigest)
 			{
-				String hex = Integer.toHexString(0xFF & messageDigest[i]);
+				String hex = Integer.toHexString(0xFF & message);
 				if (hex.length() == 1)
 				{
 					signature.append('0');
@@ -207,9 +233,9 @@ public class FileManager
 				signature.append(hex);
 			}
 
-			return signature.toString();
+			return String.valueOf(signature);
 		}
-		catch (Exception ignored){}
+		catch (Exception ignore){}
 		finally
 		{
 			try
@@ -219,9 +245,9 @@ public class FileManager
 					is.close();
 				}
 			}
-			catch (Exception ignored){}
+			catch (Exception ignore){}
 		}
 
-		return "";
+		return null;
 	}
 }
