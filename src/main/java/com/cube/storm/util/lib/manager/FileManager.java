@@ -243,7 +243,7 @@ public class FileManager
 	 * @param fileName The name of the file to write.
 	 * @param contents The byte data to write to the file
 	 */
-	public void writeFile(String fileName, byte[] contents)
+	public void writeFile(String fileName, byte[] contents) throws IOException
 	{
 		writeFile("", fileName, contents);
 	}
@@ -256,20 +256,13 @@ public class FileManager
 	 * @param fileName The name of the file to write.
 	 * @param contents The serializable data to write to the file
 	 */
-	public void writeFile(String fileName, Serializable contents)
+	public void writeFile(String fileName, Serializable contents) throws IOException
 	{
-		try
-		{
-			File file = new File(fileName);
-			ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
-			fos.writeObject(contents);
-			fos.flush();
-			fos.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		File file = new File(fileName);
+		ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
+		fos.writeObject(contents);
+		fos.flush();
+		fos.close();
 	}
 
 	/**
@@ -281,20 +274,13 @@ public class FileManager
 	 * @param fileName The name of the file to write.
 	 * @param contents The serializable data to write to the file
 	 */
-	public void writeFile(String folderPath, String fileName, Serializable contents)
+	public void writeFile(String folderPath, String fileName, Serializable contents) throws IOException
 	{
-		try
-		{
-			File file = new File(folderPath, fileName);
-			ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
-			fos.writeObject(contents);
-			fos.flush();
-			fos.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		File file = new File(folderPath, fileName);
+		ObjectOutputStream fos = new ObjectOutputStream(new FileOutputStream(file));
+		fos.writeObject(contents);
+		fos.flush();
+		fos.close();
 	}
 
 	/**
@@ -306,26 +292,19 @@ public class FileManager
 	 * @param fileName The name of the file to write.
 	 * @param contents The byte data to write to the file
 	 */
-	public void writeFile(String folderPath, String fileName, byte[] contents)
+	public void writeFile(String folderPath, String fileName, byte[] contents) throws IOException
 	{
-		try
-		{
-			File file = new File(folderPath, fileName);
+		File file = new File(folderPath, fileName);
 
-			if (file.exists())
-			{
-				file.delete();
-			}
-
-			FileOutputStream fos = new FileOutputStream(file);
-			fos.write(contents);
-			fos.flush();
-			fos.close();
-		}
-		catch (Exception e)
+		if (file.exists())
 		{
-			e.printStackTrace();
+			file.delete();
 		}
+
+		FileOutputStream fos = new FileOutputStream(file);
+		fos.write(contents);
+		fos.flush();
+		fos.close();
 	}
 
 	/**
