@@ -1,8 +1,8 @@
 package com.cube.storm.util.lib.test;
 
-import com.cube.storm.util.lib.manager.FileManager;
+import android.test.ActivityInstrumentationTestCase2;
 
-import junit.framework.TestCase;
+import java.io.IOException;
 
 /**
  * Execute tests on the FileManager
@@ -10,41 +10,28 @@ import junit.framework.TestCase;
  * @author Matt Allen
  * @project StormUtil
  */
-public class FileManagerTest extends TestCase
+public class FileManagerTest extends ActivityInstrumentationTestCase2<TestActivity>
 {
-	private static final String TEST_FILE_NAME = "File";
-	private static final String TEST_FILE_CONTENTS = "Test file !|?><~ZX~±!_+-=§1";
+	private TestActivity mActivity;
+
+	public FileManagerTest(Class<TestActivity> activityClass)
+	{
+		super(activityClass);
+	}
+
 	@Override public void setUp() throws Exception
 	{
 		super.setUp();
+		mActivity = getActivity();
 	}
 
-	public void testNullFileString() throws Exception
+	public void testWriteFile()
 	{
 		try
 		{
-			FileManager.getInstance().fileExists(null);
-			FileManager.getInstance().getFileAge(null);
-			FileManager.getInstance().readFile("");
+			mActivity.writeFileToDisk();
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			fail(e.getMessage());
-		}
-	}
-
-	public void testFileWrite() throws Exception
-	{
-		try
-		{
-			FileManager.getInstance().writeFile(TEST_FILE_NAME, TEST_FILE_CONTENTS);
-			if (!FileManager.getInstance().fileExists(TEST_FILE_NAME))
-			{
-				fail("File not found on filesystem");
-			}
-		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 			fail(e.getMessage());
