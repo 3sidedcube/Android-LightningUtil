@@ -33,4 +33,9 @@ public class TestActivity extends Activity
 			throw new IOException("File not found on disk");
 		}
 	}
+
+	public void readFileFromDisk() throws IOException
+	{
+		//FileManager.getInstance().readFile();
+	}
 }

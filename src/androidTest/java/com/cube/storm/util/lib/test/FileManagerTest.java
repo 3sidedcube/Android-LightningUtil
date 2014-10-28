@@ -1,6 +1,8 @@
 package com.cube.storm.util.lib.test;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.content.Intent;
+import android.test.ActivityUnitTestCase;
+import android.test.suitebuilder.annotation.MediumTest;
 
 import java.io.IOException;
 
@@ -10,21 +12,23 @@ import java.io.IOException;
  * @author Matt Allen
  * @project StormUtil
  */
-public class FileManagerTest extends ActivityInstrumentationTestCase2<TestActivity>
+public class FileManagerTest extends ActivityUnitTestCase<TestActivity>
 {
 	private TestActivity mActivity;
 
 	public FileManagerTest(Class<TestActivity> activityClass)
 	{
-		super(activityClass);
+		super(TestActivity.class);
 	}
 
-	@Override public void setUp() throws Exception
+	@Override
+	public void setUp() throws Exception
 	{
 		super.setUp();
-		mActivity = getActivity();
+		startActivity(new Intent(getActivity(), TestActivity.class), null, null);
 	}
 
+	@MediumTest
 	public void testWriteFile()
 	{
 		try
