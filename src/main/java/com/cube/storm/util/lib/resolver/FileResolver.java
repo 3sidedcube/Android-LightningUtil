@@ -3,9 +3,10 @@ package com.cube.storm.util.lib.resolver;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.cube.storm.util.lib.manager.FileManager;
-
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URI;
 
 /**
@@ -26,8 +27,17 @@ public class FileResolver extends Resolver
 		return null;
 	}
 
-	@Override public byte[] resolveFile(@NonNull Uri uri)
+	@Override public InputStream resolveFile(@NonNull Uri uri)
 	{
-		return FileManager.getInstance().readFile(new File(URI.create(uri.toString())));
+		try
+		{
+			return new FileInputStream(new File(URI.create(uri.toString())));
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

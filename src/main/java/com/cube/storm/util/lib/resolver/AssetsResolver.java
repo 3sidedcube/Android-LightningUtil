@@ -5,9 +5,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.cube.storm.util.lib.manager.FileManager;
-
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Resolves a file from the assets directory of the app
@@ -42,7 +41,7 @@ public class AssetsResolver extends Resolver
 		return null;
 	}
 
-	@Override public byte[] resolveFile(@NonNull Uri uri)
+	@Override public InputStream resolveFile(@NonNull Uri uri)
 	{
 		String filePath = "";
 
@@ -58,7 +57,7 @@ public class AssetsResolver extends Resolver
 
 		try
 		{
-			return FileManager.getInstance().readFile(context.getAssets().open(filePath));
+			return context.getAssets().open(filePath);
 		}
 		catch (IOException e)
 		{
