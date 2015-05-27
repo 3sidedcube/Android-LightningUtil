@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -198,9 +199,10 @@ public class FileManager
 
 		try
 		{
-			bos = new ByteArrayOutputStream(8192);
+			int bufferSize = 8192;
+			bos = new ByteArrayOutputStream(bufferSize);
+			input = new BufferedInputStream(input, bufferSize);
 
-			int bufferSize = 1024;
 			byte[] buffer = new byte[bufferSize];
 
 			int len = 0;
