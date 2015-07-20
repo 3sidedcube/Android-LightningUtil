@@ -7,8 +7,6 @@ android {
 	defaultConfig {
 		minSdkVersion 15
 		targetSdkVersion 21
-		versionCode 4
-		versionName "0.4"
 	}
 
 	packagingOptions {
