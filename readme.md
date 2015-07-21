@@ -10,7 +10,7 @@ You shouldn't need to include this dependency as it will come as part of any mod
 
 ##Gradle
 
-Simply include the following for your gradle dependencies `com.cube.storm:util:0.2`.
+Simply include the following for your gradle dependencies `com.cube.storm:util:0.3`.
 
 **Note** The versioning of the library will always be as follows:
 
@@ -24,7 +24,7 @@ See the [Javadoc](http://3sidedcube.github.io/Android-LightningUtil/) for full i
 
 #Contributors
 
-[Callum Taylor (9A8BAD)](http://keybase.io/scruffyfox), [Matt Allen (DB74F5)](https://keybase.io/mallen), [Alan Le Fournis (067EA0)](https://keybase.io/alan3sc), Luke Reed
+[Callum Taylor (9A8BAD)](http://keybase.io/scruffyfox), [Tim Mathews (5C4869)](https://keybase.io/timxyz), [Matt Allen (DB74F5)](https://keybase.io/mallen), [Alan Le Fournis (067EA0)](https://keybase.io/alan3sc)
 
 #License
 
