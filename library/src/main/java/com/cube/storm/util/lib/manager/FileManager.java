@@ -366,28 +366,29 @@ public class FileManager
 	@Nullable
 	public String getFileHash(String filePath)
 	{
-		InputStream is = null;
+		DigestInputStream is = null;
 		try
 		{
-			StringBuilder signature = new StringBuilder();
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			is = new DigestInputStream(new FileInputStream(filePath), md);
+			is = new DigestInputStream(new BufferedInputStream(new FileInputStream(filePath), 8192), md);
 
-			byte[] contents = readFile(filePath);
-			byte[] messageDigest = md.digest(contents);
+			// read the bytes into the digest stream
+			byte[] buffer = new byte[8192];
+			while (is.read(buffer) != -1);
 
-			for (byte message : messageDigest)
+			StringBuilder sb = new StringBuilder(32);
+			for (byte b : md.digest())
 			{
-				String hex = Integer.toHexString(0xFF & message);
+				String hex = Integer.toHexString(0xFF & b);
 				if (hex.length() == 1)
 				{
-					signature.append('0');
+					sb.append('0');
 				}
 
-				signature.append(hex);
+				sb.append(hex);
 			}
 
-			return String.valueOf(signature);
+			return String.valueOf(sb);
 		}
 		catch (Exception ignore){}
 		finally
