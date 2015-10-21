@@ -206,7 +206,7 @@ public class FileManager
 			byte[] buffer = new byte[bufferSize];
 
 			int len = 0;
-			while ((len = input.read(buffer)) > 0)
+			while ((len = input.read(buffer)) != -1)
 			{
 				bos.write(buffer, 0, len);
 			}
