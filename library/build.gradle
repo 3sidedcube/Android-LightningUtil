@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 21
-	buildToolsVersion "21.1.2"
+	compileSdkVersion 23
+	buildToolsVersion "23.0.1"
 
 	defaultConfig {
 		minSdkVersion 15
-		targetSdkVersion 21
+		targetSdkVersion 23
 	}
 
 	packagingOptions {
@@ -23,16 +23,14 @@ android {
 		exclude 'LICENSE.txt'
 	}
 
-	android {
-		lintOptions {
-			abortOnError false
-		}
+	lintOptions {
+		abortOnError false
 	}
 }
 
 dependencies {
-	compile 'com.android.support:support-annotations:22.2.0'
-	compile 'com.android.support:support-v13:22.2.0'
+	compile 'com.android.support:support-annotations:23.0.1'
+	compile 'com.android.support:support-v13:23.0.1'
 	compile 'org.projectlombok:lombok:1.14.8'
 	compile 'com.google.code.gson:gson:2.3'
 }
@@ -108,5 +106,5 @@ android.libraryVariants.all { variant ->
 }
 
 //apply from: '../gradle/sonatype.gradle'
-//apply from: '../gradle/artifactory.gradle'
+apply from: '../gradle/artifactory.gradle'
 
