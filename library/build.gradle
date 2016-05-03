@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
 	compileSdkVersion 23
-	buildToolsVersion "23.0.2"
+	buildToolsVersion "23.0.3"
 
 	defaultConfig {
 		minSdkVersion 15
@@ -29,26 +29,17 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:support-annotations:23.1.0'
-	compile 'com.android.support:support-v13:23.1.0'
+	compile 'com.android.support:support-annotations:23.3.0'
+	compile 'com.android.support:support-v13:23.3.0'
 	compile 'org.projectlombok:lombok:1.14.8'
-	compile 'com.google.code.gson:gson:2.3'
+	compile 'com.google.code.gson:gson:2.4'
 }
 
 def srcJava = 'src/main/java'
 def srcDelomboked = 'build/src-delomboked/main/java'
 
-task delombok {
-	inputs.files file(srcJava)
-	outputs.dir file(srcDelomboked)
-
-	doLast {
-		FileCollection collection = files(configurations.compile)
-		FileCollection sumTree = collection + fileTree(dir: 'bin')
-
-		ant.taskdef(name: 'delombok', classname: 'lombok.delombok.ant.DelombokTask', classpath: 'libs/lombok.jar')
-		ant.delombok(from:srcJava, to:srcDelomboked, classpath: sumTree.asPath)
-	}
+task delombok(type: Exec) {
+	commandLine 'java', '-jar', 'libs/lombok.jar', 'delombok', 'src', '-d', 'build/src-delomboked'
 }
 
 def findClasses(File path)
@@ -95,6 +86,7 @@ android.libraryVariants.all { variant ->
 		options.links("http://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/", "com.google.gson")
 		options.linksOffline("http://d.android.com/reference", "${android.sdkDirectory}/docs/reference");
 		options.links("http://docs.oracle.com/javase/7/docs/api/");
+		options.encoding("utf-8")
 
 		// exclude generated files
 		exclude '**/BuildConfig.java'
