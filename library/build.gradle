@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 25
-	buildToolsVersion "25.0.2"
+	compileSdkVersion 26
+	buildToolsVersion "26.0.2"
 
 	defaultConfig {
 		minSdkVersion 16
-		targetSdkVersion 25
+		targetSdkVersion 26
 	}
 
 	packagingOptions {
@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:support-annotations:25.2.0'
+	compile 'com.android.support:support-annotations:26.0.2'
 	compile 'org.projectlombok:lombok:1.14.8'
 	compile 'com.google.code.gson:gson:2.7'
 }
