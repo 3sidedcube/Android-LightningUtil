@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -198,13 +199,14 @@ public class FileManager
 
 		try
 		{
-			bos = new ByteArrayOutputStream(8192);
+			int bufferSize = 8192;
+			bos = new ByteArrayOutputStream(bufferSize);
+			input = new BufferedInputStream(input, bufferSize);
 
-			int bufferSize = 1024;
 			byte[] buffer = new byte[bufferSize];
 
 			int len = 0;
-			while ((len = input.read(buffer)) > 0)
+			while ((len = input.read(buffer)) != -1)
 			{
 				bos.write(buffer, 0, len);
 			}
@@ -364,28 +366,29 @@ public class FileManager
 	@Nullable
 	public String getFileHash(String filePath)
 	{
-		InputStream is = null;
+		DigestInputStream is = null;
 		try
 		{
-			StringBuilder signature = new StringBuilder();
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			is = new DigestInputStream(new FileInputStream(filePath), md);
+			is = new DigestInputStream(new BufferedInputStream(new FileInputStream(filePath), 8192), md);
 
-			byte[] contents = readFile(filePath);
-			byte[] messageDigest = md.digest(contents);
+			// read the bytes into the digest stream
+			byte[] buffer = new byte[8192];
+			while (is.read(buffer) != -1);
 
-			for (byte message : messageDigest)
+			StringBuilder sb = new StringBuilder(32);
+			for (byte b : md.digest())
 			{
-				String hex = Integer.toHexString(0xFF & message);
+				String hex = Integer.toHexString(0xFF & b);
 				if (hex.length() == 1)
 				{
-					signature.append('0');
+					sb.append('0');
 				}
 
-				signature.append(hex);
+				sb.append(hex);
 			}
 
-			return String.valueOf(signature);
+			return String.valueOf(sb);
 		}
 		catch (Exception ignore){}
 		finally

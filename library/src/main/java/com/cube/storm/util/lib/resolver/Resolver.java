@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.InputStream;
+
 /**
  * Abstract resolver class that helps to resolve a Uri to its correct Uri (in case of custom Uri schemes)
  * and to resolve files from a Uri
@@ -19,9 +21,10 @@ public abstract class Resolver
 	 *
 	 * @param uri The uri to resolve
 	 *
+	 * @deprecated use {@link #resolveUri(Uri)} instead. This is a convenience method.
 	 * @return The resolved uri or null
 	 */
-	@Nullable
+	@Nullable @Deprecated
 	public Uri resolveUri(@NonNull String uri)
 	{
 		return resolveUri(Uri.parse(uri));
@@ -43,8 +46,9 @@ public abstract class Resolver
 	 *
 	 * @param uri The uri to resolve
 	 *
-	 * @return The raw byte data of the loaded file, or null
+	 * @return The input stream to the file. You can use {@link com.cube.storm.util.lib.manager.FileManager#readFile(java.io.InputStream)} to resolve the stream
+	 * into a byte array
 	 */
 	@Nullable
-	public abstract byte[] resolveFile(@NonNull Uri uri);
+	public abstract InputStream resolveFile(@NonNull Uri uri);
 }
