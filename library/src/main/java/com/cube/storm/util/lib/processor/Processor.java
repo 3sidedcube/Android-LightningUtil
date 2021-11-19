@@ -1,6 +1,6 @@
 package com.cube.storm.util.lib.processor;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Abstract class to deal with processing objects

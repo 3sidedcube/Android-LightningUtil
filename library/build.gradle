@@ -1,25 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-	compileSdkVersion 27
+	compileSdkVersion 30
 
 	defaultConfig {
 		minSdkVersion 16
-		targetSdkVersion 27
-	}
-
-	packagingOptions {
-		exclude 'META-INF/DEPENDENCIES.txt'
-		exclude 'META-INF/LICENSE.txt'
-		exclude 'META-INF/NOTICE.txt'
-		exclude 'META-INF/NOTICE'
-		exclude 'META-INF/LICENSE'
-		exclude 'META-INF/DEPENDENCIES'
-		exclude 'META-INF/notice.txt'
-		exclude 'META-INF/license.txt'
-		exclude 'META-INF/dependencies.txt'
-		exclude 'META-INF/LGPL2.1'
-		exclude 'LICENSE.txt'
+		targetSdkVersion 30
 	}
 
 	lintOptions {
@@ -28,8 +14,8 @@ android {
 }
 
 dependencies {
-	compile 'com.android.support:support-annotations:27.1.1'
-	compile 'com.google.code.gson:gson:2.7'
+	implementation 'androidx.annotation:annotation:1.1.0'
+	implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 //apply from: '../gradle/sonatype.gradle'

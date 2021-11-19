@@ -2,11 +2,8 @@ package com.cube.storm.util.example;
 
 import android.app.Activity;
 import android.os.Bundle;
-
 import com.cube.storm.util.lib.debug.Debug;
 import com.cube.storm.util.lib.manager.FileManager;
-
-import junit.framework.Assert;
 
 /**
  * @author Callum Taylor
@@ -46,8 +43,7 @@ public class ExampleActivity extends Activity
 		if (FileManager.getInstance().fileExists(file))
 		{
 			String read = FileManager.getInstance().readFileAsString(file);
-
-			Assert.assertNotNull(read);
+			assert read != null;
 		}
 		else
 		{
