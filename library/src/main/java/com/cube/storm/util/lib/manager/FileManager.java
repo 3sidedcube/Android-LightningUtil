@@ -1,6 +1,5 @@
 package com.cube.storm.util.lib.manager;
 
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
@@ -17,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+
+import androidx.annotation.Nullable;
 
 /**
  * Provides JSON from a file location in different formats
@@ -104,7 +105,12 @@ public class FileManager
 	 */
 	public String readFileAsString(File file)
 	{
-		return new String(readFile(file));
+		byte[] data = readFile(file);
+		if(data != null)
+		{
+			return new String(data);
+		}
+		return null;
 	}
 
 	/**
