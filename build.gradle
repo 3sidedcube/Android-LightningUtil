@@ -2,22 +2,24 @@
 
 buildscript {
 	repositories {
-		jcenter()
 		google()
+		jcenter()
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:4.0.1'
+		classpath 'com.android.tools.build:gradle:7.0.3'
 	}
 }
 
 allprojects {
 	repositories {
+		google()
 		jcenter()
 		maven { url "https://maven.google.com" }
 
 		maven {
 			url 'http://oss.3sidedcube.com:8081/artifactory/internal'
+			allowInsecureProtocol = true
 		}
 
 		maven {
@@ -26,7 +28,7 @@ allprojects {
 				password "$ARTIFACTORY_PASSWORD"
 			}
 			url 'http://oss.3sidedcube.com:8081/artifactory/private'
+			allowInsecureProtocol = true
 		}
-		google()
 	}
 }
